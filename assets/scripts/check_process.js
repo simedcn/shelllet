@@ -6,7 +6,7 @@ windows.enumProcess((entry) => {
         dwProcessId = entry.processID;
         return false;
     }
-})
+});
 
 windows.enumWindows((wnd) => {
     if (!wnd) {
@@ -14,13 +14,13 @@ windows.enumWindows((wnd) => {
     }
     let processId = wnd.getProcessID();
 
-    // console.log(processId, wnd.getTitle());
     if (processId == dwProcessId && !wnd.getOwner()) {
-		wnd.show(windows.sw.SHOWNORMAL);
-		wnd.foreground();
-		ok = true;
-		return false;
+        wnd.show(windows.sw.SHOWNORMAL);
+        wnd.foreground();
+        ok = true;
+        return false;
     }
 
 });
+
 (()=>{return ok})()
