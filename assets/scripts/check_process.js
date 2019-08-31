@@ -15,7 +15,7 @@ windows.enumWindows((wnd) => {
     let processId = wnd.getProcessID();
 
     if (processId == dwProcessId && !wnd.getOwner()) {
-        wnd.show(windows.sw.SHOWNORMAL);
+        wnd.show(windows.show.NORMAL);
         wnd.foreground();
         ok = true;
         return false;

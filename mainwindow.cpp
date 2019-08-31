@@ -104,9 +104,14 @@ void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    this->hide();
+    hide();
     tray_.showMessage("Tips", "I'm here.");
     event->ignore();
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    show();
 }
 
 void MainWindow::on_action_quit_triggered()
@@ -119,7 +124,8 @@ void MainWindow::on_IconActivated(QSystemTrayIcon::ActivationReason reason)
     switch (reason) {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
-        this->show();
+        setWindowState(Qt::WindowActive);
+        showNormal();
         break;
     case QSystemTrayIcon::MiddleClick:
     case QSystemTrayIcon::Context:

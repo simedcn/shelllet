@@ -83,6 +83,7 @@ Section "安装文件" MAIN_FILES
     File C:\msys64\mingw64\bin\Qt5Widgets.dll
     File C:\msys64\mingw64\bin\Qt5Svg.dll
     File C:\msys64\mingw64\bin\Qt5Qml.dll
+    File C:\msys64\mingw64\bin\Qt5Network.dll
 
     ; mingw64
     File C:\msys64\mingw64\bin\libgcc_s_seh-1.dll
@@ -110,7 +111,13 @@ Section "安装文件" MAIN_FILES
     File C:\msys64\mingw64\bin\libfreetype-6.dll
     File C:\msys64\mingw64\bin\libdouble-conversion.dll
     File C:\msys64\mingw64\bin\libbz2-1.dll
-
+	
+	; vc runtime
+	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Tools\MSVC\14.23.28008\bin\Hostx64\x64\vcruntime140_1.dll"
+	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Tools\MSVC\14.23.28008\bin\Hostx64\x64\msvcp140.dll"
+	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Redist\MSVC\14.23.27820\x64\Microsoft.VC142.CRT\vccorlib140.dll"
+	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Redist\MSVC\14.23.27820\x64\Microsoft.VC142.CRT\vcruntime140.dll"
+	
     ; opencv
     File C:\opencv\build\bin\libopencv_videoio410.dll
     File C:\opencv\build\bin\libopencv_video410.dll
@@ -129,16 +136,49 @@ Section "安装文件" MAIN_FILES
     File C:\v8\v8\out.gn\x64.release\v8_libplatform.dll
 
     File ..\bin\v8_c.dll
-    File ..\bin\shelllet.exe
+    File ..\..\build-shelllet-Desktop_Qt_MinGW_w64_64bit_MSYS2-Release\release\shelllet.exe
     File ..\bin\let.exe
 
-    SetOutPath "$INSTDIR\plugins\styles"
+    SetOutPath "$INSTDIR\styles"
     File C:\msys64\mingw64\share\qt5\plugins\styles\qwindowsvistastyle.dll
-
-    SetOutPath "$INSTDIR\plugins\platforms"
+	
+	SetOutPath "$INSTDIR\bearer"
+    File C:\msys64\mingw64\share\qt5\plugins\bearer\qgenericbearer.dll
+	
+	SetOutPath "$INSTDIR\iconengines"
+    File C:\msys64\mingw64\share\qt5\plugins\iconengines\qsvgicon.dll
+	
+    SetOutPath "$INSTDIR\platforms"
     File C:\msys64\mingw64\share\qt5\plugins\platforms\qwindows.dll
 
-    SetOutPath "$INSTDIR\plugins\imageformats"
+    SetOutPath "$INSTDIR\platforminputcontexts"
+    File C:\msys64\mingw64\share\qt5\plugins\platforminputcontexts\qtvirtualkeyboardplugin.dll
+
+    SetOutPath "$INSTDIR\translations"
+    File C:\msys64\mingw64\share\qt5\translations\qt_zh_TW.qm
+    File C:\msys64\mingw64\share\qt5\translations\qt_en.qm
+
+    SetOutPath "$INSTDIR\virtualkeyboard"
+    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_hangul.dll
+    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_openwnn.dll
+    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_pinyin.dll
+    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_tcime.dll
+    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_thai.dll
+
+    SetOutPath "$INSTDIR\qmltooling"
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_debugger.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_inspector.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_local.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_messages.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_native.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_nativedebugger.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_preview.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_profiler.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_quickprofiler.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_server.dll
+    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_tcp.dll
+
+    SetOutPath "$INSTDIR\imageformats"
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qwebp.dll
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qwbmp.dll
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qtiff.dll
@@ -147,9 +187,10 @@ Section "安装文件" MAIN_FILES
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qjpeg.dll
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qjp2.dll
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qico.dll
+    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qicns.dll
     File C:\msys64\mingw64\share\qt5\plugins\imageformats\qgif.dll
 	
-	SetOutPath "$INSTDIR\assets"
+	SetOutPath "$INSTDIR"
 	File /r ..\assets
 
     ;create desktop shortcut

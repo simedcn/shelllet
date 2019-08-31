@@ -39,6 +39,7 @@ private slots:
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
+    virtual void showEvent(QShowEvent *event);
 private:
     Ui::MainWindow *ui;
 
