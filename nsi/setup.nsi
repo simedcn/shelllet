@@ -78,38 +78,35 @@
 Section "安装文件" MAIN_FILES
     SetOutPath "$INSTDIR"
     ; Qt
-    File C:\msys64\mingw64\bin\Qt5Core.dll
-    File C:\msys64\mingw64\bin\Qt5Gui.dll
-    File C:\msys64\mingw64\bin\Qt5Widgets.dll
-    File C:\msys64\mingw64\bin\Qt5Svg.dll
-    File C:\msys64\mingw64\bin\Qt5Qml.dll
-    File C:\msys64\mingw64\bin\Qt5Network.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\Qt5Core.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\Qt5Gui.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\Qt5Widgets.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\Qt5Svg.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\Qt5Qml.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\Qt5Network.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\libEGL.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\libGLESV2.dll
+    File C:\Qt\5.13.0\msvc2017_64\bin\opengl32sw.dll
 
     ; mingw64
     File C:\msys64\mingw64\bin\libgcc_s_seh-1.dll
     File C:\msys64\mingw64\bin\libwinpthread-1.dll
     File C:\msys64\mingw64\bin\zlib1.dll
     File C:\msys64\mingw64\bin\libzstd.dll
-    File C:\msys64\mingw64\bin\libwebpdemux-2.dll
-    File C:\msys64\mingw64\bin\libwebp-7.dll
     File C:\msys64\mingw64\bin\libtiff-5.dll
     File C:\msys64\mingw64\bin\libstdc++-6.dll
     File C:\msys64\mingw64\bin\libpng16-16.dll
-    File C:\msys64\mingw64\bin\libpcre2-16-0.dll
     File C:\msys64\mingw64\bin\libpcre-1.dll
     File C:\msys64\mingw64\bin\liblzma-5.dll
     File C:\msys64\mingw64\bin\libjpeg-8.dll
     File C:\msys64\mingw64\bin\libjasper-4.dll
     File C:\msys64\mingw64\bin\libintl-8.dll
-    File C:\msys64\mingw64\bin\libicuuc64.dll
-    File C:\msys64\mingw64\bin\libicuin64.dll
-    File C:\msys64\mingw64\bin\libicudt64.dll
     File C:\msys64\mingw64\bin\libiconv-2.dll
     File C:\msys64\mingw64\bin\libharfbuzz-0.dll
     File C:\msys64\mingw64\bin\libgraphite2.dll
     File C:\msys64\mingw64\bin\libglib-2.0-0.dll
     File C:\msys64\mingw64\bin\libfreetype-6.dll
-    File C:\msys64\mingw64\bin\libdouble-conversion.dll
+
     File C:\msys64\mingw64\bin\libbz2-1.dll
 	
 	; vc runtime
@@ -136,62 +133,39 @@ Section "安装文件" MAIN_FILES
     File C:\v8\v8\out.gn\x64.release\v8_libplatform.dll
 
     File ..\bin\v8_c.dll
-    File ..\..\build-shelllet-Desktop_Qt_MinGW_w64_64bit_MSYS2-Release\release\shelllet.exe
+    File ..\bin\shelllet.exe
     File ..\bin\let.exe
 
     SetOutPath "$INSTDIR\styles"
-    File C:\msys64\mingw64\share\qt5\plugins\styles\qwindowsvistastyle.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\styles\qwindowsvistastyle.dll
 	
 	SetOutPath "$INSTDIR\bearer"
-    File C:\msys64\mingw64\share\qt5\plugins\bearer\qgenericbearer.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\bearer\qgenericbearer.dll
 	
 	SetOutPath "$INSTDIR\iconengines"
-    File C:\msys64\mingw64\share\qt5\plugins\iconengines\qsvgicon.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\iconengines\qsvgicon.dll
 	
     SetOutPath "$INSTDIR\platforms"
-    File C:\msys64\mingw64\share\qt5\plugins\platforms\qwindows.dll
-
-    SetOutPath "$INSTDIR\platforminputcontexts"
-    File C:\msys64\mingw64\share\qt5\plugins\platforminputcontexts\qtvirtualkeyboardplugin.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\platforms\qwindows.dll
 
     SetOutPath "$INSTDIR\translations"
-    File C:\msys64\mingw64\share\qt5\translations\qt_zh_TW.qm
-    File C:\msys64\mingw64\share\qt5\translations\qt_en.qm
+    File C:\Qt\5.13.0\msvc2017_64\translations\qt_zh_TW.qm
+    File C:\Qt\5.13.0\msvc2017_64\translations\qt_en.qm
 
-    SetOutPath "$INSTDIR\virtualkeyboard"
-    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_hangul.dll
-    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_openwnn.dll
-    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_pinyin.dll
-    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_tcime.dll
-    File C:\msys64\mingw64\share\qt5\plugins\virtualkeyboard\qtvirtualkeyboard_thai.dll
-
-    SetOutPath "$INSTDIR\qmltooling"
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_debugger.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_inspector.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_local.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_messages.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_native.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_nativedebugger.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_preview.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_profiler.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_quickprofiler.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_server.dll
-    File C:\msys64\mingw64\share\qt5\plugins\qmltooling\qmldbg_tcp.dll
 
     SetOutPath "$INSTDIR\imageformats"
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qwebp.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qwbmp.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qtiff.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qtga.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qsvg.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qjpeg.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qjp2.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qico.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qicns.dll
-    File C:\msys64\mingw64\share\qt5\plugins\imageformats\qgif.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qwebp.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qwbmp.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qtiff.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qtga.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qsvg.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qjpeg.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qico.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qicns.dll
+    File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qgif.dll
 	
 	SetOutPath "$INSTDIR"
-	File /r ..\assets
+	File /r ..\bin\assets
 
     ;create desktop shortcut
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${APPNAME}.exe" ""
