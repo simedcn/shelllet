@@ -39,7 +39,7 @@ private slots:
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
-    virtual void showEvent(QShowEvent *event);
+	virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result);
 private:
     Ui::MainWindow *ui;
 

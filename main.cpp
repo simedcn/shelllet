@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         QJSEngine myEngine;
         QJSValue three = myEngine.evaluate(QString(result));
 
-        if (three.toBool()){
+        if (three.isBool() && three.toBool()){
             return 0;
         }
     }

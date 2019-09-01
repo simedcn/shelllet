@@ -113,3 +113,11 @@ console.log($GOPATH)
 //console.log(Object.keys(FileSystem))
 //console.log(Object.keys(FileSystem.Path))
 //console.log(FileSystem.Path.userDocuments)
+
+let id = windows.getCurrentThreadID();
+
+windows.enumDesktopWindow(windows.getThreadDesktop(id), (window) => {
+    if (window) {
+        console.log(window.getTitle())
+    }    
+})
