@@ -88,50 +88,30 @@ Section "安装文件" MAIN_FILES
     File C:\Qt\5.13.0\msvc2017_64\bin\libGLESV2.dll
     File C:\Qt\5.13.0\msvc2017_64\bin\opengl32sw.dll
 
-    ; mingw64
-    File C:\msys64\mingw64\bin\libgcc_s_seh-1.dll
-    File C:\msys64\mingw64\bin\libwinpthread-1.dll
-    File C:\msys64\mingw64\bin\zlib1.dll
-    File C:\msys64\mingw64\bin\libzstd.dll
-    File C:\msys64\mingw64\bin\libtiff-5.dll
-    File C:\msys64\mingw64\bin\libstdc++-6.dll
-    File C:\msys64\mingw64\bin\libpng16-16.dll
-    File C:\msys64\mingw64\bin\libpcre-1.dll
-    File C:\msys64\mingw64\bin\liblzma-5.dll
-    File C:\msys64\mingw64\bin\libjpeg-8.dll
-    File C:\msys64\mingw64\bin\libjasper-4.dll
-    File C:\msys64\mingw64\bin\libintl-8.dll
-    File C:\msys64\mingw64\bin\libiconv-2.dll
-    File C:\msys64\mingw64\bin\libharfbuzz-0.dll
-    File C:\msys64\mingw64\bin\libgraphite2.dll
-    File C:\msys64\mingw64\bin\libglib-2.0-0.dll
-    File C:\msys64\mingw64\bin\libfreetype-6.dll
-
-    File C:\msys64\mingw64\bin\libbz2-1.dll
-	
-	; vc runtime
-	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Tools\MSVC\14.23.28008\bin\Hostx64\x64\vcruntime140_1.dll"
-	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Tools\MSVC\14.23.28008\bin\Hostx64\x64\msvcp140.dll"
-	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Redist\MSVC\14.23.27820\x64\Microsoft.VC142.CRT\vccorlib140.dll"
-	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Redist\MSVC\14.23.27820\x64\Microsoft.VC142.CRT\vcruntime140.dll"
+ 	; vc runtime
+	File "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Redist\MSVC\14.23.27820\vcredist_x64.exe"
 	
     ; opencv
-    File C:\opencv\build\bin\libopencv_videoio410.dll
-    File C:\opencv\build\bin\libopencv_video410.dll
-    File C:\opencv\build\bin\libopencv_objdetect410.dll
-    File C:\opencv\build\bin\libopencv_imgproc410.dll
-    File C:\opencv\build\bin\libopencv_imgcodecs410.dll
-    File C:\opencv\build\bin\libopencv_highgui410.dll
-    File C:\opencv\build\bin\libopencv_flann410.dll
-    File C:\opencv\build\bin\libopencv_features2d410.dll
-    File C:\opencv\build\bin\libopencv_dnn410.dll
-    File C:\opencv\build\bin\libopencv_core410.dll
-    File C:\opencv\build\bin\libopencv_calib3d410.dll
+    File $%VCPKG_ROOT%\installed\x64-windows\bin\opencv_imgcodecs.dll
+    File $%VCPKG_ROOT%\installed\x64-windows\bin\opencv_imgproc.dll
+    File $%VCPKG_ROOT%\installed\x64-windows\bin\opencv_core.dll
+
     ; v8
     File C:\v8\v8\out.gn\x64.release\v8.dll
     File C:\v8\v8\out.gn\x64.release\v8_libbase.dll
     File C:\v8\v8\out.gn\x64.release\v8_libplatform.dll
 
+	; tesseract
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\zlib1.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\webp.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\tiff.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\lzma.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\libpng16.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\leptonica-1.78.0.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\jpeg62.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_date_time-vc142-mt-x64-1_70.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_thread-vc142-mt-x64-1_70.dll
+	
     File ..\bin\v8_c.dll
     File ..\bin\shelllet.exe
     File ..\bin\let.exe

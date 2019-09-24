@@ -1,9 +1,40 @@
 //import * as Test from "./index.js";
 //import "shelllet/v0.1.0/common.let.dll"
 
-console.log(`Hello World!`)
-console.log($GOPATH)
+//let tim = windows.find("TIM");
 
+let image = images.read("C:\\Users\\Admin\\Pictures\\login.custom.exp0.png");
+let text = image.text("C:\\Users\\Admin\\source\\repos\\ConsoleApplication2\\ConsoleApplication2\\tessdata", "hz");
+
+console.log(text)
+//window.setPos(windows.NOTOPMOST)
+//console.log(registry.CURRENT_USER)
+// let image = window.capture();
+
+//console.log(tim.getWindowRect())
+
+// let image = images.captureDesktop()
+//
+// image.write(dir.Pictures + "\\qq++.jpg");
+//
+// let login = image.subImage(tim.getWindowRect());
+//
+// login.write(dir.Pictures + "\\login.jpg")
+//
+// let result = login.matchTemplate(dir.Pictures + "\\2019-09-17_102801.png")
+//
+// console.log(result.first)
+// console.log(result.second)
+// console.log(result.second.min)
+//
+// let screenPoint = tim.mapToGlobal(result.second.min);
+// console.log(screenPoint)
+// screenPoint.add(images.pt(20, 10))
+//
+// mouse.moveAndClick(screenPoint)
+//console.log(ioutil.readFile("c:/works/a.txt"))
+
+//ioutil.writeFile("c:/works/a.txt", "sgsgsg")
 // var hook = win.mouseHookStart((msg, r, pt )=>{
 //     console.log(r);
 //     console.log(pt.x);
@@ -114,10 +145,10 @@ console.log($GOPATH)
 //console.log(Object.keys(FileSystem.Path))
 //console.log(FileSystem.Path.userDocuments)
 
-let id = windows.getCurrentThreadID();
+// let id = windows.getCurrentThreadID();
 
-windows.enumDesktopWindow(windows.getThreadDesktop(id), (window) => {
-    if (window) {
-        console.log(window.getTitle())
-    }    
-})
+// windows.enumDesktopWindow(windows.getThreadDesktop(id), (window) => {
+    // if (window) {
+        // console.log(window.getTitle())
+    // }    
+// })
