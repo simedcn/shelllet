@@ -112,7 +112,7 @@ Section "安装文件" MAIN_FILES
 	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_date_time-vc142-mt-x64-1_70.dll
 	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_thread-vc142-mt-x64-1_70.dll
 	
-    File ..\bin\v8_c.dll
+    File ..\bin\let.dll
     File ..\bin\shelllet.exe
     File ..\bin\let.exe
 
@@ -145,7 +145,7 @@ Section "安装文件" MAIN_FILES
     File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qgif.dll
 	
 	SetOutPath "$INSTDIR"
-	File /r ..\bin\assets
+	File /r ..\assets
 
     ;create desktop shortcut
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${APPNAME}.exe" ""

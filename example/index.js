@@ -3,10 +3,11 @@
 
 //let tim = windows.find("TIM");
 
-let image = images.read("C:\\Users\\Admin\\Pictures\\login.custom.exp0.png");
-let text = image.text("C:\\Users\\Admin\\source\\repos\\ConsoleApplication2\\ConsoleApplication2\\tessdata", "hz");
+//let image = images.read("C:\\Users\\Admin\\Pictures\\login.custom.exp0.png");
+//let text = image.text("C:\\Users\\Admin\\source\\repos\\ConsoleApplication2\\ConsoleApplication2\\tessdata", "hz");
 
-console.log(text)
+Object.keys(windows)
+//console.log(text)
 //window.setPos(windows.NOTOPMOST)
 //console.log(registry.CURRENT_USER)
 // let image = window.capture();
