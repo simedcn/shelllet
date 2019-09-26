@@ -115,7 +115,11 @@ Section "安装文件" MAIN_FILES
     File ..\bin\let.dll
     File ..\bin\shelllet.exe
     File ..\bin\let.exe
-
+	; assets
+	SetOutPath "$INSTDIR\assets"
+	File /r ..\assets
+	File /r ..\..\let\assets
+	
     SetOutPath "$INSTDIR\styles"
     File C:\Qt\5.13.0\msvc2017_64\plugins\styles\qwindowsvistastyle.dll
 	
@@ -144,9 +148,6 @@ Section "安装文件" MAIN_FILES
     File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qicns.dll
     File C:\Qt\5.13.0\msvc2017_64\plugins\imageformats\qgif.dll
 	
-	SetOutPath "$INSTDIR"
-	File /r ..\assets
-
     ;create desktop shortcut
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${APPNAME}.exe" ""
    
