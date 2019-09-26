@@ -6,7 +6,7 @@
   Unicode true
 
 ;General
-  !define VERSION "0.4.0"
+  !define VERSION "0.5.0"
   !define PRODUCT_NAME "shelllet ${VERSION}"
   !define APPNAME "shelllet"
   !define MUI_FOLDER "shelllet.com"
@@ -116,7 +116,7 @@ Section "安装文件" MAIN_FILES
     File ..\bin\shelllet.exe
     File ..\bin\let.exe
 	; assets
-	SetOutPath "$INSTDIR\assets"
+	SetOutPath "$INSTDIR"
 	File /r ..\assets
 	File /r ..\..\let\assets
 	
