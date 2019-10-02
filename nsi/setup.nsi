@@ -110,6 +110,7 @@ Section "安装文件" MAIN_FILES
 	File $%VCPKG_ROOT%\installed\x64-windows\bin\leptonica-1.78.0.dll
 	File $%VCPKG_ROOT%\installed\x64-windows\bin\jpeg62.dll
 	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_date_time-vc142-mt-x64-1_70.dll
+	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_random-vc142-mt-x64-1_70.dll
 	File $%VCPKG_ROOT%\installed\x64-windows\bin\boost_thread-vc142-mt-x64-1_70.dll
 	
     File ..\bin\let.dll
@@ -173,6 +174,12 @@ Section "安装文件" MAIN_FILES
     ;Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+	; Check VC Runtime
+	ReadRegDWORD $0 HKLM SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\x64 Installed
+	${If} $0 <> 1
+		ExecWait '"$INSTDIR\vcredist_x64.exe" /q' 
+	${EndIf}
+	
 SectionEnd
 
 
@@ -204,14 +211,6 @@ Section Un.Main UnMain
 
   DeleteRegKey /ifempty HKCU "Software\${PRODUCT_NAME}"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}"
-SectionEnd
-
-Section Un.Script
-
-  SetShellVarContext current
-
-  RMDir /r "$PROGRAMFILES64\scripts"
-
 SectionEnd
 
 Function LaunchLink
