@@ -1,0 +1,16 @@
+[package]
+name = "rust"
+version = "0.1.0"
+authors = ["shelllet <shelllet@gmai.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+console = "0.9.1"
+clap = "2.33.0"
+winreg = "0.6.2"
+cpp = "0.5.4"
+
+[build-dependencies]
+cpp_build = "0.5"
