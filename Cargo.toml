@@ -11,6 +11,9 @@ console = "0.9.1"
 clap = "2.33.0"
 winreg = "0.6.2"
 cpp = "0.5.4"
-
+dyon = "0.44.0"
+xml-rs = "0.8.0"
+winapi = "0.3.8"
+lazy_static = "1.4.0"
 [build-dependencies]
 cpp_build = "0.5"

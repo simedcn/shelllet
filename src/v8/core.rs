@@ -13,19 +13,22 @@ use crate::v8::object_template::LocalObjectTemplate;
 use crate::v8::function_template;
 use crate::v8::object_template;
 
-pub trait MyTrait {
-    fn compute_value(&self, x: i32) -> i32;
+pub trait MyObjectTemplateTrait {
+    fn createObjectTemplate(&self) -> LocalObjectTemplate;
 }
 
 cpp!{{
   
+    struct MyClass {
+        virtual v8::Local<v8::ObjectTemplate> createObjectTemplate(int) = 0;
+    };
 
     void createContext(v8::Isolate* isolate, MyClass *callback){
         v8::TryCatch try_catch(isolate);
 	v8::Locker locker(isolate);
 	v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
-    v8::Local<v8::ObjectTemplate> object_template =  callback.computeValue();
+    v8::Local<v8::ObjectTemplate> object_template =  callback.createObjectTemplate();
 
 	v8::Local<v8::Context> local = v8::Context::New(isolate, nullptr, object_template);
 	v8::Context::Scope context_scope(local);
@@ -44,10 +47,10 @@ cpp! {{
     class MyClassImpl : public MyClass {
       public:
         TraitPtr2 m_trait;
-        v8::Local<v8::ObjectTemplate>  computeValue() const /*override*/ {
+        v8::Local<v8::ObjectTemplate>  createObjectTemplate() /*override*/ {
            return rust!(MCI_computeValue [m_trait : &dyn MyTrait as "TraitPtr2"]
                -> LocalObjectTemplate as "v8::Local<v8::ObjectTemplate>" {
-              m_trait.compute_value()
+              m_trait.LocalObjectTemplate()
            });
        }
    };
@@ -72,11 +75,11 @@ pub fn main3(){
 }
 
 
-struct MyTraitImpl {
+struct MyObjectTemplateTraitImpl {
    
 }
-impl MyTrait for MyTraitImpl {
-    fn compute_value(&self, x: i32) -> LocalObjectTemplate {
+impl MyObjectTemplateTrait for MyObjectTemplateTraitImpl {
+    fn createObjectTemplate(&self) -> LocalObjectTemplate {
         let mut f = function_template::LocalFunctionTemplate::new(inst_ptr);
         let mut o = object_template::LocalObjectTemplate::new();
         o.set2("sss".to_owned(), f);
@@ -96,52 +99,12 @@ pub fn createTempl(){
    // eval( o);
 }
 pub fn main2() {
-    let name = std::ffi::CString::new("World").unwrap();
-    let name_ptr = name.as_ptr();
 
-
-    let isolate = unsafe {
-        cpp!([name_ptr as "const char *"] -> *mut u32 as "v8::Isolate *" {
-            std::cout << "Hello, " << name_ptr << std::endl;
-
-            std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
-
-            v8::V8::InitializePlatform(platform.get());
-            v8::V8::Initialize();
-            
-            v8::Isolate::CreateParams create_params;
-	        create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
-
-            v8::Isolate* isolate = v8::Isolate::New(create_params);
-            isolate->SetData(0xff, platform.release());
-            
-            
-            return isolate;
-        })
-    };
-   // assert_eq!(r, 42);
-
-    run_code(isolate);
-   unsafe{
-    cpp!([isolate as "v8::Isolate*"] {
-
-        auto array_buffer_allocator = isolate->GetArrayBufferAllocator();
-        auto platform = static_cast<v8::Platform*>(isolate->GetData(0xff));
-
-        isolate->Dispose();
-        v8::V8::Dispose();
-        v8::V8::ShutdownPlatform();
-        delete platform;
-        delete array_buffer_allocator;
-    } )
-   };
 
 
 
 cpp! {{
-    struct MyClass {
-        virtual int computeValue(int) const = 0;
-    };
+   
     int operate123(MyClass *callback) { return callback->computeValue(123); }
 
     struct TraitPtr2 {
@@ -175,25 +138,6 @@ println!("############{}", std::mem::size_of_val(&inst_ptr));
 
 }
 
-fn run_code(isolate : *mut u32){
-
-    // unsafe{
-    //     cpp!([isolate as "v8::Isolate*"]{
-    //         v8::Locker locker(isolate);
-	//         v8::Isolate::Scope isolate_scope(isolate);
-    //      //   v8::HandleScope handle_scope(isolate);
-            
-    //         std::cout << "locker....." << std::endl;
-    //         std::cout << "isolate:" << isolate << std::endl;
-    //     })
-
-      
-
-    // };
-
-    
-    
-}
 cpp!{{
     v8::ScriptOrigin module_script_origin(const char* resource_name, v8::Isolate* isolate) {
         v8::ScriptOrigin origin(v8::String::NewFromUtf8(isolate, resource_name,

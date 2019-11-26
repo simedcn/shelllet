@@ -1,15 +1,19 @@
 #[macro_use]
 extern crate clap;
 extern crate winreg;
-//#[macro_use]
 #[macro_use]
-extern crate cpp;
+extern crate lazy_static;
+#[macro_use]
+extern crate dyon;
 
-mod registry;
-mod fs;
-mod v8;
+extern crate winapi;
+
+extern crate xml;
 use std::mem;
 use std::sync::Arc;
+
+mod engine;
+mod parser;
 
 use clap::{App, Arg, SubCommand};
 
@@ -74,8 +78,8 @@ fn main() {
         }
     }
    
-   
-
-    v8::core::main2();
  
+    parser::parser::parse("".to_owned());
+
+        engine::context::run(matches);
 }

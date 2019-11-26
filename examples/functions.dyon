@@ -1,7 +1,9 @@
 
 fn main() {
-    homer := homer()
+    //homer := homer()
 
-    println(homer.hkey)
-    delete_subkey_all(homer.hkey, "Software\\LiveUpdate360")
+  //  println(homer.hkey)
+   // delete_subkey_all(homer.hkey, "Software\\LiveUpdate360")
+
+   start("notepad.exe", "", [])
 }
