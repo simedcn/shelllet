@@ -15,5 +15,7 @@ dyon = "0.44.0"
 xml-rs = "0.8.0"
 winapi = "0.3.8"
 lazy_static = "1.4.0"
+log = "0.4"
+env_logger = "0.7.1"
 [build-dependencies]
 cpp_build = "0.5"

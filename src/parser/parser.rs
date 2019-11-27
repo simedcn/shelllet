@@ -18,32 +18,62 @@ use crate::parser::start_process;
 // }
 
 lazy_static! {
-    static ref BOOK_REVIEWS: HashMap<&'static str, fn(Vec<xml::attribute::OwnedAttribute>)> = {
+    static ref ACTIVITY_REVIEWS: HashMap<&'static str, fn(&mut String, Vec<OwnedAttribute>)> = {
         let mut m = HashMap::new();
         m.insert(
             start_process::name(),
-            start_process::start_process as fn(Vec<xml::attribute::OwnedAttribute>),
+            start_process::start_process as fn(&mut String, Vec<OwnedAttribute>),
         );
         m
     };
 }
 
-fn indent(size: usize) -> String {
-    const INDENT: &'static str = "    ";
-    (0..size)
-        .map(|_| INDENT)
-        .fold(String::with_capacity(size * INDENT.len()), |r, s| r + s)
-}
+#[derive(Clone)]
+pub struct OwnedAttribute {
+    pub name: String,
+    pub value: String,
+ }
+ 
 
-pub fn parse(file_name: String) {
+
+
+fn convert(attributes: Vec<xml::attribute::OwnedAttribute>) -> Vec<OwnedAttribute>{
+    let mut index = false;
+ 
+    let mut result = Vec::new();
+ 
+    let mut attribute = OwnedAttribute {name: "".to_string(), value: "".to_string()};
+   // attribute.name =  String::from("anotheremail@example.com");
+
+    for x in attributes {
+ 
+       if !index {
+          attribute.name = x.value.clone();
+          index = true;
+       } else if index {
+        
+          attribute.value = x.value.clone();
+          result.push(OwnedAttribute {..attribute.clone()});
+          index = false;
+       }
+ 
+    }
+ 
+    result
+ 
+ }
+
+pub fn parse(file_name: String) ->String{
+    use std::fmt::Write;
     let wide = std::ffi::CString::new("aa").unwrap();
-
+    let mut output = String::new();
+    let mut stream = String::new();
     unsafe {
 
         // MessageBoxA(std::ptr::null_mut(), wide.as_ptr(), wide.as_ptr(), MB_OK);
     };
 
-    let file = File::open("C:\\Users\\Admin\\shelllet.com\\Projects\\dd\\main.xml").unwrap();
+    let file = File::open(file_name).unwrap();
     let file = BufReader::new(file);
 
     let mut parser = EventReader::new(file);
@@ -55,7 +85,7 @@ pub fn parse(file_name: String) {
                ref name, ref mut attributes, ..
             }) => {
               //  println!("{}+{}", indent(depth), name);
-                if BOOK_REVIEWS.contains_key(&name.local_name.as_str()) {
+                if ACTIVITY_REVIEWS.contains_key(&name.local_name.as_str()) {
                     loop {
                         let mut ee = parser.next();
                         match ee {
@@ -81,7 +111,7 @@ pub fn parse(file_name: String) {
                         }
                     }
 
-                    BOOK_REVIEWS[&name.local_name.as_str()](attributes.to_vec());
+                    ACTIVITY_REVIEWS[&name.local_name.as_str()](&mut stream, convert(attributes.to_vec()));
                 }
 
                 depth += 1;
@@ -94,4 +124,10 @@ pub fn parse(file_name: String) {
             _ => {}
         }
     }
+
+    writeln!(&mut output, "fn main() {{").expect("ss");
+    writeln!(&mut output, "  {}", stream).expect("ss");
+    writeln!(&mut output, "}}").expect("ss");
+
+    output
 }

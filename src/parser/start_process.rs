@@ -1,34 +1,35 @@
-
-
 use std::fmt::Write;
 
-pub fn name()-> &'static str{
+pub fn name() -> &'static str {
    return "StartProcess";
-  
 }
 
+use crate::parser::parser;
 
-pub fn start_process( attributes: Vec<xml::attribute::OwnedAttribute>){
 
-  let mut index = false;
-  let mut output  = String::new();
-for x in &attributes {
+pub fn start_process(output: &mut String, attributes: Vec<parser::OwnedAttribute>) {
+   let mut index = false;
 
-   if !index {
-    write!(&mut output, "let {} =  ", x.value).expect("Error occurred while trying to write in String");
-      index = true;
-   } else if index{
-      writeln!(&mut output, "{:?}", x.value).expect("Error occurred while trying to write in String");
-      index = false;
+   for x in &attributes {
+      if !index {
+         write!(output, "{} :=  ", x.value)
+            .expect("Error occurred while trying to write in String");
+         index = true;
+      } else if index {
+         writeln!(output, "{:?}", x.value).expect("Error occurred while trying to write in String");
+         index = false;
+      }
    }
-  // println!("{:?}, {:?}", x.name.local_name, x.value);
-}
 
-  let aa= attributes.iter().find(|x| {
-   println!("{}", x.name.local_name);  
-   x.value == "DisplayName"});
-  println!("{:?}", aa.unwrap().value);
+   //let find = attributes.iter().find(|x| x.value == "Arguments");
 
-   writeln!(&mut output, "start({}, {}, {})", "FileName", "Arguments", "WorkingDirectory").expect("error");
-   println!("{}", output );
+  
+  // writeln!(output, "file_name := {}",  );
+
+   writeln!(
+      output,
+      "start({}, {}, {})",
+      "FileName", "Arguments", "WorkingDirectory"
+   )
+   .expect("error");
 }

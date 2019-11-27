@@ -7,6 +7,10 @@ extern crate lazy_static;
 extern crate dyon;
 
 extern crate winapi;
+#[macro_use]
+extern crate log;
+extern crate env_logger;
+
 
 extern crate xml;
 use std::mem;
@@ -16,8 +20,13 @@ mod engine;
 mod parser;
 
 use clap::{App, Arg, SubCommand};
-
+use log::{info, trace, warn};
 fn main() {
+    let env = env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "trace");
+    
+    env_logger::Builder::from_env(env).init();
+
+
     let matches = App::new("My Super Program")
         .version("1.0")
         .author("Kevin K. <kbknapp@gmail.com>")
@@ -42,17 +51,6 @@ fn main() {
                 .multiple(true)
                 .help("Sets the level of verbosity"),
         )
-        .subcommand(
-            SubCommand::with_name("test")
-                .about("controls testing features")
-                .version("1.3")
-                .author("Someone E. <someone_else@other.com>")
-                .arg(
-                    Arg::with_name("debug")
-                        .short("d")
-                        .help("print debug information verbosely"),
-                ),
-        )
         .get_matches();
 
     // Gets a value for config if supplied by user, or defaults to "default.conf"
@@ -68,18 +66,14 @@ fn main() {
         3 | _ => println!("Don't be crazy"),
     }
 
-    // You can handle information about subcommands by requesting their matches by name
-    // (as below), requesting just the name used, or both at the same time
-    if let Some(matches) = matches.subcommand_matches("test") {
-        if matches.is_present("debug") {
-            println!("Printing debug info...");
-        } else {
-            println!("Printing normally...");
-        }
-    }
-   
- 
-    parser::parser::parse("".to_owned());
 
-        engine::context::run(matches);
+    let input = matches.value_of("INPUT");
+    let path = std::path::Path::new(input.expect("msg: &str"));
+    if path.extension() == Some(std::ffi::OsStr::new("dyon")) {
+        engine::context::load(path.to_str().expect("sss").to_owned());
+    } else if path.extension() == Some(std::ffi::OsStr::new("xml")) {
+        let code = parser::parser::parse(path.to_str().expect("sss").to_owned());
+        info!("\n{}", code);
+        engine::context::load_code(code);
+    }
 }

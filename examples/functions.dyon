@@ -1,9 +1,9 @@
 
 fn main() {
-    //homer := homer()
 
-  //  println(homer.hkey)
-   // delete_subkey_all(homer.hkey, "Software\\LiveUpdate360")
+    Arguments :=  "ssssss"
+    WorkingDirectory :=  "ssss"
+    FileName :=  "notepad.exe"
+    start(FileName, Arguments, WorkingDirectory)
 
-   start("notepad.exe", "", [])
 }

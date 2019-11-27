@@ -13,16 +13,16 @@ pub fn add_fun() ->   dyon::Module {
 }
 
 
-pub fn load_file(file: &String, module: &mut Module) -> std::option::Option<String>{
-    if dyon::error(dyon::load(file, module)) {
+pub fn load_file(file: String, module: &mut Module) -> std::option::Option<String>{
+    if dyon::error(dyon::load(&file, module)) {
         None
     } else {
         Some("".to_owned())
     }
 }
 
-pub fn load_str(str: String, module: &mut Module) -> std::option::Option<String>{
-    if dyon::error(dyon::load_str("noname", std::sync::Arc::new(str), module)) {
+pub fn load_str(code: String, module: &mut Module) -> std::option::Option<String>{
+    if dyon::error(dyon::load_str("noname", std::sync::Arc::new(code), module)) {
         None
     } else {
         Some("".to_owned())
