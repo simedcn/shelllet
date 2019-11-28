@@ -2,7 +2,7 @@
 //use crate::v8::function_template::LocalFunctionTemplate;
 use crate::v8::data::LocalData;
 
-cpp_class!(pub(crate) unsafe struct LocalObjectTemplate as "v8::Local<v8::ObjectTemplate>");
+cpp_class!(pub unsafe struct LocalObjectTemplate as "v8::Local<v8::ObjectTemplate>");
 
 
 

@@ -5,3 +5,4 @@ pub mod object;
 pub mod context;
 pub mod data;
 pub mod function_callback_Info;
+pub mod string;

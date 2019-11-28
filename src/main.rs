@@ -72,7 +72,7 @@ fn main() {
 
     let input = matches.value_of("INPUT");
     let path = std::path::Path::new(input.expect("msg: &str"));
-    if path.extension() == Some(std::ffi::OsStr::new("dyon")) {
+    if path.extension() == Some(std::ffi::OsStr::new("js")) {
         engine::context::load(path.to_str().expect("sss").to_owned());
     } else if path.extension() == Some(std::ffi::OsStr::new("xml")) {
         let code = parser::parser::parse(path.to_str().expect("sss").to_owned());

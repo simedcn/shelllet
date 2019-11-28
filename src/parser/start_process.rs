@@ -8,11 +8,14 @@ use crate::parser::parser;
 
 
 pub fn start_process(output: &mut String, attributes: Vec<parser::OwnedAttribute>) {
+  
+   writeln!(output, "let x =5;");
+   return;
    let mut index = false;
 
    for x in &attributes {
       if !index {
-         write!(output, "{} :=  ", x.value)
+         write!(output, "const {} =  ", x.value)
             .expect("Error occurred while trying to write in String");
          index = true;
       } else if index {

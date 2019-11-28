@@ -125,7 +125,7 @@ pub fn parse(file_name: String) ->String{
         }
     }
 
-    writeln!(&mut output, "fn main() {{").expect("ss");
+    writeln!(&mut output, "void main() {{").expect("ss");
     writeln!(&mut output, "  {}", stream).expect("ss");
     writeln!(&mut output, "}}").expect("ss");
 

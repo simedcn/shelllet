@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <v8.h>
 #include <libplatform/libplatform.h>
 
@@ -52,17 +53,22 @@ v8::ScriptOrigin module_script_origin(const char *resource_name, v8::Isolate *is
 class Wrapper {
     public:
     virtual std::string source() = 0;
-    virtual std::string name() = 0;
+    virtual std::string name() const = 0;
 
     virtual v8::Local<v8::ObjectTemplate> objtpl() = 0;
 
     virtual void gl(v8::Local<v8::Object> g) = 0;
 };
 
+std::string exception(v8::Isolate *isolate, v8::TryCatch* try_catch){
+    v8::String::Utf8Value value(isolate, try_catch->Exception());
+    return std::string(*value);
+}
+
 void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context,  Wrapper* wp)
 {
-    v8::TryCatch try_catch(isolate);
     v8::Locker locker(isolate);
+    v8::TryCatch try_catch(isolate);
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
 
@@ -74,12 +80,17 @@ void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context
 
     v8::ScriptOrigin origin = module_script_origin(wp->name().c_str(), isolate);
 
+    std::cout << wp->name() << std::endl;
+    std::cout << wp->source() << std::endl;
+    //wp->source().c_str()
 	v8::Local<v8::Module> module;
-	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, wp->source().c_str()).ToLocalChecked(), origin);
+	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, "let x = 5;").ToLocalChecked(), origin);
 	if (!v8::ScriptCompiler::CompileModule(isolate, &source_text).ToLocal(&module)) {
 		//reportException(isolate_, &try_catch);
 		//return std::string();
-        throw("xxx");
+        std::string s= exception(isolate, &try_catch);
+        std::cout << s;
+        return;
 	}
 
 	if (module->InstantiateModule(context, [](v8::Local<v8::Context> context,

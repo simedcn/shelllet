@@ -1,7 +1,4 @@
-cpp_class!(pub(crate) unsafe struct LocalData as "v8::Local<v8::Data>");
+cpp_class!(pub unsafe struct LocalData as "v8::Local<v8::Data>");
 
+impl LocalData {}
 
-
-impl LocalData {
-
-}

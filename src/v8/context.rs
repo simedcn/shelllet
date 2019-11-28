@@ -5,7 +5,7 @@ impl LocalContext{
 
 }
 
-cpp_class!(pub(crate) unsafe struct GlobalContext as "v8::Global<v8::Context>");
+cpp_class!(pub unsafe struct GlobalContext as "v8::Global<v8::Context>");
 
 
 impl GlobalContext{
@@ -13,6 +13,14 @@ impl GlobalContext{
         unsafe {
             return cpp!([] -> GlobalContext as "v8::Global<v8::Context>" {
                 return v8::Global<v8::Context>();
+            });
+        }
+    }
+
+    pub fn reset(&mut self) {
+        unsafe {
+            cpp!([self as "v8::Global<v8::Context>*"] {
+               self->Reset();
             });
         }
     }
