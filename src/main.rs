@@ -3,14 +3,14 @@ extern crate clap;
 extern crate winreg;
 #[macro_use]
 extern crate lazy_static;
-#[macro_use]
-extern crate dyon;
 
 extern crate winapi;
 #[macro_use]
 extern crate log;
 extern crate env_logger;
 
+#[macro_use]
+extern crate cpp;
 
 extern crate xml;
 use std::mem;
@@ -18,6 +18,9 @@ use std::sync::Arc;
 
 mod engine;
 mod parser;
+mod v8;
+
+
 
 use clap::{App, Arg, SubCommand};
 use log::{info, trace, warn};
@@ -74,6 +77,7 @@ fn main() {
     } else if path.extension() == Some(std::ffi::OsStr::new("xml")) {
         let code = parser::parser::parse(path.to_str().expect("sss").to_owned());
         info!("\n{}", code);
-        engine::context::load_code(code);
+        use crate::engine::context;
+        context::load_code(path.file_stem().unwrap().to_string_lossy().to_string(), code);
     }
 }
