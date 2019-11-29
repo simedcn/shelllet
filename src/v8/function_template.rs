@@ -2,13 +2,11 @@
 use crate::v8::data::LocalData;
 use crate::v8::function_callback_Info::FunctionCallbackInfo;
 
-cpp_class!(pub(crate) unsafe struct LocalFunctionTemplate as "v8::Local<v8::FunctionTemplate>");
-
+cpp_class!(pub unsafe struct LocalFunctionTemplate as "v8::Local<v8::FunctionTemplate>");
 
 pub trait FunctionCalback {
     fn callback(&self, info: FunctionCallbackInfo);
 }
-
 
 cpp! {{
    class FunctionCalback {
@@ -16,7 +14,7 @@ cpp! {{
    };
 
    //#include <iostream>
-   struct FunctionCalbackHolder {void*a;  };
+   struct FunctionCalbackHolder {void*a, *b;  };
 
    class FunctionCalbackImpl : public FunctionCalback{
        public:
@@ -34,30 +32,35 @@ cpp! {{
 //use LocalFunctionTemplate::v8::local::LocalFunctionTemplate;
 
 impl LocalFunctionTemplate {
-    pub fn new(callback: &mut impl FunctionCalback) -> LocalFunctionTemplate {
+    pub fn new(inst_ptr: &dyn FunctionCalback) -> LocalFunctionTemplate {
         unsafe {
-            return cpp!([callback as "FunctionCalback*"] -> LocalFunctionTemplate as "v8::Local<v8::FunctionTemplate>" {
+            return cpp!([inst_ptr as "FunctionCalbackHolder"] -> LocalFunctionTemplate as "v8::Local<v8::FunctionTemplate>" {
                auto isolate = v8::Isolate::GetCurrent();
-               v8::HandleScope handle_scope(isolate);
-               FunctionCalback*m_trait  = callback;
+               v8::EscapableHandleScope handle_scope(isolate);
 
-                auto ooo = v8::FunctionTemplate::New(isolate, [](const v8::FunctionCallbackInfo<v8::Value>& callback_info) {
-                    v8::Local<v8::External> external = callback_info.Data().As<v8::External>();
-                    FunctionCalback* callback = reinterpret_cast<FunctionCalback*>(external->Value());
+              FunctionCalbackImpl* impl = new FunctionCalbackImpl();
+              impl->m_trait = inst_ptr;
+                auto ooo = v8::FunctionTemplate::New(isolate, [](const v8::FunctionCallbackInfo<v8::Value>& args) {
+                    v8::Local<v8::External> external = args.Data().As<v8::External>();
+                    FunctionCalbackImpl* callback = reinterpret_cast<FunctionCalbackImpl*>(external->Value());
+                    callback->callback(args);
+                //    rust!(MCI_computeValue [callback : &FunctionCalback as "FunctionCalbackHolder*", callback_info : FunctionCallbackInfo as "const v8::FunctionCallbackInfo<v8::Value>&"] {
+                //     callback.callback(callback_info)});
+               }, v8::External::New(isolate, impl));
 
-                   rust!(MCI_computeValue [callback : &dyn FunctionCalback as "FunctionCalback*", callback_info : FunctionCallbackInfo as "const v8::FunctionCallbackInfo<v8::Value>&"] {
-                    callback.callback(callback_info)});
-               }, v8::External::New(isolate, m_trait));
-
-                    return ooo;
+                 return handle_scope.Escape( ooo);
             });
         }
     }
 
-    pub fn data(&mut self) -> LocalData {
+    pub fn data(&self) -> LocalData {
         unsafe {
             return cpp!([self as "v8::Local<v8::FunctionTemplate>"]-> LocalData as "v8::Local<v8::Data>"{
+               // auto isolate = v8::Isolate::GetCurrent();
+              //  v8::EscapableHandleScope handle_scope(isolate);
+            //    v8::Local<v8::Data> data = self;
                 return self;
+                //return handle_scope.Escape( self);
             });
         }
     }

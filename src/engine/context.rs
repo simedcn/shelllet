@@ -1,6 +1,7 @@
 
 
 use crate::v8::object_template::LocalObjectTemplate;
+use crate::v8::function_template::LocalFunctionTemplate;
 use crate::v8::object::LocalObject;
 use crate::v8::core::WrapperTrait;
 use crate::v8::function_template::FunctionCalback;
@@ -30,6 +31,7 @@ impl FunctionCalback for FunctionCalbackImpl {
 struct WrapperTraitImpl {
     name:String,
     src: String,
+    cb: FunctionCalbackImpl
 }
 impl WrapperTrait for WrapperTraitImpl {
     fn source(&self) -> StdString{
@@ -39,11 +41,16 @@ impl WrapperTrait for WrapperTraitImpl {
         StdString::new(self.name.clone())
     }
 
-    fn objtpl(&self) ->LocalObjectTemplate{
+    fn objtpl(&mut self) ->LocalObjectTemplate{
 
-      let obj =  LocalObjectTemplate::new();
+      let mut obj =  LocalObjectTemplate::new();
 
-      obj;
+     
+
+      let f = LocalFunctionTemplate::new( &mut self.cb);
+      obj.set2("dd".to_string(), f);
+      obj
+
 
     }
     fn gl(&self, obj : LocalObject){
@@ -53,7 +60,9 @@ impl WrapperTrait for WrapperTraitImpl {
 
 
 pub fn load_code(name:String, src: String) {
-    let wrapper = WrapperTraitImpl{ name, src};
+   let cb = FunctionCalbackImpl{};
+  
+    let wrapper = WrapperTraitImpl{ name, src, cb };
     let wrapper_ptr: &dyn WrapperTrait = &wrapper;
 use crate::v8::core::run;
 let  mut global_context: GlobalContext = GlobalContext::new();

@@ -44,7 +44,7 @@ cpp! {{
           }
 
         v8::Local<v8::ObjectTemplate> objtpl() {
-            return rust!(MCI_ObjectTemplate [m_trait : &dyn WrapperTrait as "Holder"]
+            return rust!(MCI_ObjectTemplate [m_trait : &mut dyn WrapperTrait as "Holder"]
             -> LocalObjectTemplate as "v8::Local<v8::ObjectTemplate>" {
             return   m_trait.objtpl();
         });
@@ -57,7 +57,7 @@ cpp! {{
 pub trait WrapperTrait {
   fn source(&self) -> StdString;
   fn name(&self) -> StdString;
-  fn objtpl(&self) -> LocalObjectTemplate;
+  fn objtpl(&mut self) -> LocalObjectTemplate;
   fn gl(&self, obj: LocalObject);
 }
 

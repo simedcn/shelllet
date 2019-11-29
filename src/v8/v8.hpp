@@ -84,7 +84,7 @@ void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context
     std::cout << wp->source() << std::endl;
     //wp->source().c_str()
 	v8::Local<v8::Module> module;
-	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, "let x = 5;").ToLocalChecked(), origin);
+	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, "dd();").ToLocalChecked(), origin);
 	if (!v8::ScriptCompiler::CompileModule(isolate, &source_text).ToLocal(&module)) {
 		//reportException(isolate_, &try_catch);
 		//return std::string();
@@ -113,4 +113,9 @@ void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context
 	}
     v8::Local<v8::Value> value;
     module->Evaluate(context).ToLocal(&value);
+
+    if (try_catch.HasCaught()) {
+	  std::string s= exception(isolate, &try_catch);
+        std::cout << s;
+	}
 }
