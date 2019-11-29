@@ -7,11 +7,9 @@ cpp! {{
 
 //use crate::v8::handle_scope;
 
-use crate::v8::context::GlobalContext;
 //use crate::v8::function_template::LocalFunctionTemplate;
-use crate::v8::object::LocalObject;
-use crate::v8::object_template::LocalObjectTemplate;
 use crate::v8::string::StdString;
+use crate::v8::*;
 
 //lazy_static! {
 

@@ -1,4 +1,5 @@
-cpp_class!(pub unsafe struct LocalData as "v8::Local<v8::Data>");
+
+use crate::v8::*;
 
 impl LocalData {
     pub fn new() -> Self {

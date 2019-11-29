@@ -1,7 +1,6 @@
 
 
 use crate::v8::*;
-use crate::v8::object::LocalObject;
 use crate::v8::core::WrapperTrait;
 use crate::v8::function_template::FunctionCalback;
 use crate::v8::function_callback_Info::FunctionCallbackInfo;
@@ -9,7 +8,6 @@ use crate::v8::string::StdString;
 
 use crate::engine::console::{Console};
 
-use crate::v8::context::GlobalContext;
 pub fn load(source: String) {
 
     let contents = std::fs::read_to_string(&source)
@@ -60,7 +58,7 @@ impl WrapperTrait for WrapperTraitImpl {
         let mut tpl = LocalObjectTemplate::new();
         self.console.created_object_template(&mut tpl);
         
-       let inst = tpl.new_instance(self.global_context).expect();
+       let inst = tpl.new_instance(self.global_context).expect("eroor");
 
         obj.create_data_property(self.global_context, LocalName::new(self.console.name()), inst.value());
     }

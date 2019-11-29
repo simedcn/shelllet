@@ -6,7 +6,7 @@ pub mod context;
 pub mod data;
 pub mod function_callback_Info;
 pub mod string;
-//mod name;
+mod name;
 mod value;
 
 mod bool;
@@ -24,12 +24,13 @@ cpp_class!(pub unsafe struct LocalObjectTemplate as "v8::Local<v8::ObjectTemplat
 cpp_class!(pub unsafe struct LocalFunctionTemplate as "v8::Local<v8::FunctionTemplate>");
 cpp_class!(pub unsafe struct GlobalContext as "v8::Global<v8::Context>");
 cpp_class!(pub unsafe struct LocalValue as "v8::Local<v8::Value>");
+cpp_class!(pub unsafe struct LocalData as "v8::Local<v8::Data>");
 
 pub trait Base{
 
-    fn created_object_template(tpl: &mut LocalObjectTemplate);
-    fn create_function_template(tpl: &mut LocalObjectTemplate);
+    fn created_object_template(self, tpl: &mut LocalObjectTemplate);
+    fn create_function_template(self, tpl: &mut LocalObjectTemplate);
 
-    fn name() ->String;
+    fn name(self) ->String;
 
 }

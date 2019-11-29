@@ -1,4 +1,4 @@
-use crate::v8::value::LocalValue;
+
 use crate::v8::LocalName;
 use crate::v8::*;
 use crate::v8::bool;
@@ -7,20 +7,20 @@ use crate::v8::bool;
 impl LocalObject {
   pub  fn create_data_property(
         &self,
-        context: LocalContext,
+        gl_context: GlobalContext,
         name: LocalName,
         value: LocalValue,
     ) -> Result<bool, &str> {
         let result = unsafe {
-            cpp!([self as "v8::Local<v8::Object>*", context as "v8::Local<v8::Context>",
+            cpp!([self as "v8::Local<v8::Object>*", gl_context as "v8::Global<v8::Context>",
             name as "v8::Local<v8::Name>",
             value as "v8::Local<v8::Value>" ] -> MaybeBool as "v8::Maybe<bool>"{
-               //  auto isolate = v8::Isolate::GetCurrent();
+                auto isolate = v8::Isolate::GetCurrent();
                //  v8::Locker locker(isolate);
                //  v8::HandleScope handle_scope(isolate);
                 // std::cout << "#name:" << cstring << std::endl;
 
-                //v8::Local<v8::Context> context = v8::Local<v8::Context>::New(isolate, gl_context.Get(isolate));
+                v8::Local<v8::Context> context = v8::Local<v8::Context>::New(isolate, gl_context.Get(isolate));
                 //v8::Context::Scope context_scope(context);
 
 
@@ -37,7 +37,7 @@ impl LocalObject {
 
     pub fn value(&self) -> LocalValue {
         unsafe {
-            return cpp!([self as "v8::Local<v8::Object>"]-> LocalData as "v8::Local<v8::Value>"{
+            return cpp!([self as "v8::Local<v8::Object>"]-> LocalValue as "v8::Local<v8::Value>"{
                // auto isolate = v8::Isolate::GetCurrent();
               //  v8::EscapableHandleScope handle_scope(isolate);
             //    v8::Local<v8::Data> data = self;

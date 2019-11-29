@@ -1,5 +1,4 @@
 //cpp_class!(pub(crate) unsafe struct FunctionTemplate as "v8::FunctionTemplate");
-use crate::v8::data::LocalData;
 use crate::v8::function_callback_Info::FunctionCallbackInfo;
 use crate::v8::*;
 
