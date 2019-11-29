@@ -1,12 +1,13 @@
 
 
-use crate::v8::object_template::LocalObjectTemplate;
-use crate::v8::function_template::LocalFunctionTemplate;
+use crate::v8::*;
 use crate::v8::object::LocalObject;
 use crate::v8::core::WrapperTrait;
 use crate::v8::function_template::FunctionCalback;
 use crate::v8::function_callback_Info::FunctionCallbackInfo;
 use crate::v8::string::StdString;
+
+use crate::engine::console::{Console};
 
 use crate::v8::context::GlobalContext;
 pub fn load(source: String) {
@@ -19,9 +20,9 @@ pub fn load(source: String) {
     load_code(path.file_stem().unwrap().to_string_lossy().to_string(), contents);
 }
 
-pub struct FunctionCalbackImpl {}
+pub struct ConsoleImpl {}
 
-impl FunctionCalback for FunctionCalbackImpl {
+impl FunctionCalback for ConsoleImpl {
     fn callback(&self, info: FunctionCallbackInfo) {
         println!("called");
     }
@@ -31,7 +32,9 @@ impl FunctionCalback for FunctionCalbackImpl {
 struct WrapperTraitImpl {
     name:String,
     src: String,
-    cb: FunctionCalbackImpl
+    global_context: GlobalContext,
+    cb: ConsoleImpl,
+    console: Console
 }
 impl WrapperTrait for WrapperTraitImpl {
     fn source(&self) -> StdString{
@@ -54,17 +57,24 @@ impl WrapperTrait for WrapperTraitImpl {
 
     }
     fn gl(&self, obj : LocalObject){
+        let mut tpl = LocalObjectTemplate::new();
+        self.console.created_object_template(&mut tpl);
+        
+       let inst = tpl.new_instance(self.global_context).expect();
 
+        obj.create_data_property(self.global_context, LocalName::new(self.console.name()), inst.value());
     }
 }
 
 
 pub fn load_code(name:String, src: String) {
-   let cb = FunctionCalbackImpl{};
+   let cb = ConsoleImpl{};
+   let   global_context: GlobalContext = GlobalContext::new();
   
-    let wrapper = WrapperTraitImpl{ name, src, cb };
+
+   let console = Console{};
+    let wrapper = WrapperTraitImpl{ name, src,global_context, cb ,console };
     let wrapper_ptr: &dyn WrapperTrait = &wrapper;
 use crate::v8::core::run;
-let  mut global_context: GlobalContext = GlobalContext::new();
     run(&mut global_context, wrapper_ptr);
 }

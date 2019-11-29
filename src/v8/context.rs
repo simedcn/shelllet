@@ -1,11 +1,11 @@
-cpp_class!(pub(crate) unsafe struct LocalContext as "v8::Local<v8::Context>");
 
+
+use crate::v8::*;
 
 impl LocalContext{
 
 }
 
-cpp_class!(pub unsafe struct GlobalContext as "v8::Global<v8::Context>");
 
 
 impl GlobalContext{

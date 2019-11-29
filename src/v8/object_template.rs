@@ -1,8 +1,8 @@
 
-use crate::v8::function_template::LocalFunctionTemplate;
-use crate::v8::data::LocalData;
 
-cpp_class!(pub unsafe struct LocalObjectTemplate as "v8::Local<v8::ObjectTemplate>");
+use crate::v8::data::LocalData;
+use crate::v8::*;
+
 
 
 
@@ -36,6 +36,16 @@ impl LocalObjectTemplate {
             });
         }
 
+    }
+    pub fn new_instance(&mut self, gl_context: GlobalContext) -> Result<LocalObject, &str>{
+        unsafe {
+            return cpp!([self as "v8::Local<v8::ObjectTemplate>", gl_context as "v8::Global<v8::Context>"] {
+                auto isolate = v8::Isolate::GetCurrent();
+                v8::Local<v8::Context> context = v8::Local<v8::Context>::New(isolate, gl_context.Get(isolate));
+                v8::Context::Scope context_scope(context);
+                self->NewInstance(context);
+            });
+        }
     }
     pub fn set2(&mut self, name: String,  value: LocalFunctionTemplate ){
         let c_to_print = std::ffi::CString::new(name).expect("CString::new failed");

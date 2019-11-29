@@ -1,8 +1,7 @@
 //cpp_class!(pub(crate) unsafe struct FunctionTemplate as "v8::FunctionTemplate");
 use crate::v8::data::LocalData;
 use crate::v8::function_callback_Info::FunctionCallbackInfo;
-
-cpp_class!(pub unsafe struct LocalFunctionTemplate as "v8::Local<v8::FunctionTemplate>");
+use crate::v8::*;
 
 pub trait FunctionCalback {
     fn callback(&self, info: FunctionCallbackInfo);
