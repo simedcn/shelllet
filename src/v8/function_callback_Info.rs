@@ -1,4 +1,5 @@
-cpp_class!(pub unsafe struct FunctionCallbackInfo as "v8::FunctionCallbackInfo<v8::Value>");
+
+use crate::v8::FunctionCallbackInfo;
 
 impl FunctionCallbackInfo{
     

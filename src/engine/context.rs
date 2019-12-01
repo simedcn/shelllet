@@ -1,21 +1,18 @@
-
-
-use crate::v8::*;
 use crate::v8::core::WrapperTrait;
 use crate::v8::function_template::FunctionCalback;
-use crate::v8::function_callback_Info::FunctionCallbackInfo;
 use crate::v8::string::StdString;
+use crate::v8::*;
 
-use crate::engine::console::{Console};
+use crate::engine::console::Console;
 
 pub fn load(source: String) {
-
-    let contents = std::fs::read_to_string(&source)
-    .expect("Something went wrong reading the file");
+    let contents = std::fs::read_to_string(&source).expect("Something went wrong reading the file");
     let path = std::path::Path::new(&source);
 
-
-    load_code(path.file_stem().unwrap().to_string_lossy().to_string(), contents);
+    load_code(
+        path.file_stem().unwrap().to_string_lossy().to_string(),
+        contents,
+    );
 }
 
 pub struct ConsoleImpl {}
@@ -26,53 +23,55 @@ impl FunctionCalback for ConsoleImpl {
     }
 }
 
-
 struct WrapperTraitImpl {
-    name:String,
+    name: String,
     src: String,
     global_context: GlobalContext,
     cb: ConsoleImpl,
-    console: Console
+    console: Console,
 }
 impl WrapperTrait for WrapperTraitImpl {
-    fn source(&self) -> StdString{
-       StdString::new(self.src.clone())
+    fn source(&self) -> StdString {
+        StdString::new(self.src.clone())
     }
-    fn name(&self) -> StdString{
+    fn name(&self) -> StdString {
         StdString::new(self.name.clone())
     }
 
-    fn objtpl(&mut self) ->LocalObjectTemplate{
+    fn objtpl(&mut self) -> LocalObjectTemplate {
+        let mut obj = LocalObjectTemplate::new();
 
-      let mut obj =  LocalObjectTemplate::new();
-
-     
-
-      let f = LocalFunctionTemplate::new( &mut self.cb);
-      obj.set2("dd".to_string(), f);
-      obj
-
-
+        let f = LocalFunctionTemplate::new(&mut self.cb);
+        obj.set2("dd".to_string(), f);
+        obj
     }
-    fn gl(&self, obj : LocalObject){
+    fn gl(&self, obj: LocalObject) {
         let mut tpl = LocalObjectTemplate::new();
         self.console.created_object_template(&mut tpl);
-        
-       let inst = tpl.new_instance(self.global_context).expect("eroor");
 
-        obj.create_data_property(self.global_context, LocalName::new(self.console.name()), inst.value());
+        let inst = tpl.new_instance(&self.global_context).expect("eroor");
+
+        obj.create_data_property(
+            &self.global_context,
+            LocalName::new(&self.console.name()),
+            inst.value(),
+        );
     }
 }
 
+pub fn load_code(name: String, src: String) {
+    let cb = ConsoleImpl {};
+    let global_context: GlobalContext = GlobalContext::new();
 
-pub fn load_code(name:String, src: String) {
-   let cb = ConsoleImpl{};
-   let   global_context: GlobalContext = GlobalContext::new();
-  
-
-   let console = Console{};
-    let wrapper = WrapperTraitImpl{ name, src,global_context, cb ,console };
+    let console = Console {};
+    let wrapper = WrapperTraitImpl {
+        name,
+        src,
+        global_context,
+        cb,
+        console,
+    };
     let wrapper_ptr: &dyn WrapperTrait = &wrapper;
-use crate::v8::core::run;
-    run(&mut global_context, wrapper_ptr);
+    use crate::v8::core::run;
+    run(&wrapper.global_context, wrapper_ptr);
 }

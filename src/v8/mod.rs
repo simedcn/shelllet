@@ -25,12 +25,13 @@ cpp_class!(pub unsafe struct LocalFunctionTemplate as "v8::Local<v8::FunctionTem
 cpp_class!(pub unsafe struct GlobalContext as "v8::Global<v8::Context>");
 cpp_class!(pub unsafe struct LocalValue as "v8::Local<v8::Value>");
 cpp_class!(pub unsafe struct LocalData as "v8::Local<v8::Data>");
+cpp_class!(pub unsafe struct FunctionCallbackInfo as "v8::FunctionCallbackInfo<v8::Value>");
 
 pub trait Base{
 
-    fn created_object_template(self, tpl: &mut LocalObjectTemplate);
-    fn create_function_template(self, tpl: &mut LocalObjectTemplate);
+    fn created_object_template(&self, tpl: &mut LocalObjectTemplate);
+    fn create_function_template(&self, tpl: &mut LocalObjectTemplate);
 
-    fn name(self) ->String;
+    fn name(&self) ->String;
 
 }

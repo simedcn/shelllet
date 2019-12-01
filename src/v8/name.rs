@@ -2,8 +2,8 @@
 use crate::v8::*;
 
 impl LocalName {
-    pub fn new(str: String) -> Self {
-        let name = std::ffi::CString::new(str).unwrap();
+    pub fn new(str: &String) -> Self {
+        let name = std::ffi::CString::new(str.as_str()).unwrap();
         let name_ptr = name.as_ptr();
 
         unsafe {

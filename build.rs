@@ -7,7 +7,8 @@ fn main() {
 
     let include_path = format!("{}/include", v8_sdk);
 
-    println!("{}", include_path);
+    //println!("-----------------------------------------------");
+    //println!("{}", include_path);
 
     let lib_path = format!("{}/out.gn/x64.debug", v8_sdk);
     cpp_build::Config::new().include(include_path).build("src/v8/mod.rs");

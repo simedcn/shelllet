@@ -36,7 +36,7 @@ impl LocalObjectTemplate {
         }
 
     }
-    pub fn new_instance(&mut self, gl_context: GlobalContext) -> Result<LocalObject, &str>{
+    pub fn new_instance(&mut self, gl_context: &GlobalContext) -> Result<LocalObject, &str>{
        let result =  unsafe {
             cpp!([self as "v8::Local<v8::ObjectTemplate>", gl_context as "v8::Global<v8::Context>"]
             -> MaybeLocalObject as "v8::MaybeLocal<v8::Object>"{
@@ -47,10 +47,10 @@ impl LocalObjectTemplate {
             })
         };
 
-        if result.is_emtpy() {
+        if result.is_empty() {
             Err("errr")
         } else{
-            Ok(result.to_local_checked())
+            Ok((& result).to_local_checked())
         }
     }
     pub fn set2(&mut self, name: String,  value: LocalFunctionTemplate ){

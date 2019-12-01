@@ -7,7 +7,7 @@ use crate::v8::bool;
 impl LocalObject {
   pub  fn create_data_property(
         &self,
-        gl_context: GlobalContext,
+        gl_context: &GlobalContext,
         name: LocalName,
         value: LocalValue,
     ) -> Result<bool, &str> {
@@ -50,17 +50,17 @@ impl LocalObject {
 
 
 impl MaybeLocalObject{
-    pub fn is_empty(self) -> bool{
+    pub fn is_empty(&self) -> bool{
         unsafe {
             cpp!([self as "v8::MaybeLocal<v8::Object>"] -> bool as "bool" {
                return self.IsEmpty();
             })
         }
     }
-    pub fn to_local_checked(&mut self) -> LocalObject{
+    pub fn to_local_checked(& self) -> LocalObject{
         unsafe {
             cpp!([self as "v8::MaybeLocal<v8::Object>*"] -> LocalObject as "v8::Local<v8::Object>" {
-               return (*self).ToLocalChecked();
+               return self->ToLocalChecked();
             })
         }
     }

@@ -84,7 +84,7 @@ void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context
     std::cout << wp->source() << std::endl;
     //wp->source().c_str()
 	v8::Local<v8::Module> module;
-	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, "dd();").ToLocalChecked(), origin);
+	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, "console.log(5);").ToLocalChecked(), origin);
 	if (!v8::ScriptCompiler::CompileModule(isolate, &source_text).ToLocal(&module)) {
 		//reportException(isolate_, &try_catch);
 		//return std::string();
