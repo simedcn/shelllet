@@ -5,6 +5,8 @@
 #include <v8.h>
 #include <libplatform/libplatform.h>
 
+
+v8::Global<v8::Context> gl_context;
 v8::Isolate *create()
 {
 
@@ -65,7 +67,7 @@ std::string exception(v8::Isolate *isolate, v8::TryCatch* try_catch){
     return std::string(*value);
 }
 
-void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context,  Wrapper* wp)
+void createContext(v8::Isolate *isolate, Wrapper* wp)
 {
     v8::Locker locker(isolate);
     v8::TryCatch try_catch(isolate);
@@ -74,17 +76,17 @@ void createContext(v8::Isolate *isolate, v8::Global<v8::Context>* global_context
 
     v8::Local<v8::Context> context = v8::Context::New(isolate, nullptr, wp->objtpl());
     v8::Context::Scope context_scope(context);
-    global_context->Reset(isolate, context);
+    gl_context.Reset(isolate, context);
 
     wp->gl(context->Global());
 
     v8::ScriptOrigin origin = module_script_origin(wp->name().c_str(), isolate);
 
-    std::cout << wp->name() << std::endl;
-    std::cout << wp->source() << std::endl;
+    std::cout <<"file name: " << wp->name() << std::endl;
+    //std::cout << wp->source() << std::endl;
     //wp->source().c_str()
 	v8::Local<v8::Module> module;
-	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, "console.log(5);").ToLocalChecked(), origin);
+	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, wp->source().c_str()).ToLocalChecked(), origin);
 	if (!v8::ScriptCompiler::CompileModule(isolate, &source_text).ToLocal(&module)) {
 		//reportException(isolate_, &try_catch);
 		//return std::string();

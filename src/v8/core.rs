@@ -15,14 +15,12 @@ use crate::v8::*;
 //   unsafe { std::mem::MaybeUninit::zeroed() };
 //}
 
-
 pub trait WrapperTrait {
   fn source(&self) -> StdString;
   fn name(&self) -> StdString;
   fn objtpl(&mut self) -> LocalObjectTemplate;
   fn gl(&self, obj: LocalObject);
 }
-
 
 cpp! {{
   struct Holder{void*p1, *p2;};
@@ -63,26 +61,28 @@ cpp! {{
         }
  };
 
- void run( v8::Global<v8::Context>*context, const Holder& holder ){
+ void native_run(const Holder& holder ){
   v8::Isolate* isolate = create();
   MyClassWrapperImpl mci;
   mci.m_trait = holder;
 
-  createContext(isolate, context, &mci);
-  context->Reset();
+  createContext(isolate, &mci);
+  gl_context.Reset();
   release(isolate);
  }
 }}
 
-pub fn run(context: & GlobalContext, wrapper_ptr: &dyn WrapperTrait) {
+pub fn run(wrapper_ptr: &dyn WrapperTrait) {
   //     let name = std::ffi::CString::new(name).unwrap();
   //   let name_ptr = name.as_ptr();
 
   //   let source = std::ffi::CString::new(source).unwrap();
   //   let source_ptr = source.as_ptr();
   unsafe {
-    cpp!([context as "v8::Global<v8::Context>*", wrapper_ptr as "Holder"] {
-      run(context, wrapper_ptr);
-    })
-  };
+   cpp!([wrapper_ptr as "Holder"] {
+      native_run(wrapper_ptr);
+   })
+  
+
+}
 }

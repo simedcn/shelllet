@@ -1,9 +1,0 @@
-
-fn main() {
-
-    Arguments :=  "ssssss"
-    WorkingDirectory :=  "ssss"
-    FileName :=  "notepad.exe"
-    start(FileName, Arguments, WorkingDirectory)
-
-}

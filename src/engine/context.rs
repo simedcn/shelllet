@@ -26,7 +26,7 @@ impl FunctionCalback for ConsoleImpl {
 struct WrapperTraitImpl {
     name: String,
     src: String,
-    global_context: GlobalContext,
+  //  global_context: GlobalContext,
     cb: ConsoleImpl,
     console: Console,
 }
@@ -47,12 +47,12 @@ impl WrapperTrait for WrapperTraitImpl {
     }
     fn gl(&self, obj: LocalObject) {
         let mut tpl = LocalObjectTemplate::new();
-        self.console.created_object_template(&mut tpl);
+       self.console.created_object_template(&mut tpl);
 
-        let inst = tpl.new_instance(&self.global_context).expect("eroor");
+        let inst = tpl.new_instance();
 
         obj.create_data_property(
-            &self.global_context,
+          
             LocalName::new(&self.console.name()),
             inst.value(),
         );
@@ -61,17 +61,17 @@ impl WrapperTrait for WrapperTraitImpl {
 
 pub fn load_code(name: String, src: String) {
     let cb = ConsoleImpl {};
-    let global_context: GlobalContext = GlobalContext::new();
+    //let global_context: GlobalContext = GlobalContext::new();
 
     let console = Console {};
     let wrapper = WrapperTraitImpl {
         name,
         src,
-        global_context,
+     //   global_context,
         cb,
         console,
     };
     let wrapper_ptr: &dyn WrapperTrait = &wrapper;
     use crate::v8::core::run;
-    run(&wrapper.global_context, wrapper_ptr);
+    run(wrapper_ptr);
 }

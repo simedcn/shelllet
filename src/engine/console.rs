@@ -19,7 +19,7 @@ impl Base for Console {
     
 
         let f = LocalFunctionTemplate::new(self);
-        tpl.set("log".to_string(), f.data());
+        tpl.set2("log".to_string(), f);
 
     }
     fn create_function_template(&self, tpl: &mut LocalObjectTemplate){
