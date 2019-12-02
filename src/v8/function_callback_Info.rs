@@ -12,6 +12,10 @@ impl FunctionCallbackInfo {
     }
 
     pub fn at(self, index: i32) -> LocalValue {
+        if index > self.length() {
+            return LocalValue::new();
+        }
+        
         unsafe {
             cpp!([self as "v8::FunctionCallbackInfo<v8::Value>", index as "int"]-> LocalValue as "v8::Local<v8::Value>"{
                 auto isolate = v8::Isolate::GetCurrent();

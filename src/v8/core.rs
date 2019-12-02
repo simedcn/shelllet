@@ -1,5 +1,7 @@
 cpp! {{
-    #include "src/v8/v8.hpp"
+  #pragma warning( disable : 4100 )
+
+  #include "src/v8/v8.hpp"
 }}
 
 //mod kill;
@@ -79,10 +81,8 @@ pub fn run(wrapper_ptr: &dyn WrapperTrait) {
   //   let source = std::ffi::CString::new(source).unwrap();
   //   let source_ptr = source.as_ptr();
   unsafe {
-   cpp!([wrapper_ptr as "Holder"] {
-      native_run(wrapper_ptr);
-   })
-  
-
-}
+    cpp!([wrapper_ptr as "Holder"] {
+       native_run(wrapper_ptr);
+    })
+  }
 }
