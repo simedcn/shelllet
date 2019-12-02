@@ -1,8 +1,8 @@
 use crate::v8::core::WrapperTrait;
-use crate::v8::function_template::FunctionCalback;
 use crate::v8::*;
 
 use crate::engine::console::Console;
+use crate::engine::global;
 
 pub fn load(source: String) {
     let contents = std::fs::read_to_string(&source).expect("Something went wrong reading the file");
@@ -14,19 +14,11 @@ pub fn load(source: String) {
     );
 }
 
-pub struct ConsoleImpl {}
-
-impl FunctionCalback for ConsoleImpl {
-    fn callback(&self, info: &FunctionCallbackInfo) {
-        println!("called");
-    }
-}
-
 struct WrapperTraitImpl {
     name: String,
     src: String,
-  //  global_context: GlobalContext,
-    cb: ConsoleImpl,
+    //  global_context: GlobalContext,
+    // cb: ConsoleImpl,
     console: Console,
 }
 impl WrapperTrait for WrapperTraitImpl {
@@ -39,35 +31,34 @@ impl WrapperTrait for WrapperTraitImpl {
 
     fn objtpl(&mut self) -> LocalObjectTemplate {
         let mut obj = LocalObjectTemplate::new();
+        let g = global::global_function();
 
-        let f = LocalFunctionTemplate::new(&mut self.cb);
-        obj.set2("dd".to_string(), f);
+        for x in g.iter() {
+            let f = LocalFunctionTemplate::new(x.as_ref());
+            obj.set(x.fn_name().to_string(), f.data());
+        }
         obj
     }
     fn gl(&self, obj: LocalObject) {
         let mut tpl = LocalObjectTemplate::new();
-       self.console.created_object_template(&mut tpl);
+        self.console.created_object_template(&mut tpl);
 
         let inst = tpl.new_instance();
 
-        obj.create_data_property(
-          
-            LocalName::new(&self.console.name()),
-            inst.value(),
-        );
+        obj.create_data_property(LocalName::new(&self.console.name()), inst.value());
     }
 }
 
 pub fn load_code(name: String, src: String) {
-    let cb = ConsoleImpl {};
+    //  let cb = ConsoleImpl {};
     //let global_context: GlobalContext = GlobalContext::new();
 
     let console = Console {};
     let wrapper = WrapperTraitImpl {
         name,
         src,
-     //   global_context,
-        cb,
+        //   global_context,
+        //   cb,
         console,
     };
     let wrapper_ptr: &dyn WrapperTrait = &wrapper;

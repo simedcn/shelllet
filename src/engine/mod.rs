@@ -4,3 +4,4 @@ pub mod ps;
 pub mod context;
 
 mod console;
+mod global;

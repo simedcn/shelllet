@@ -32,6 +32,10 @@ cpp_class!(pub unsafe struct ReturnValue as "v8::ReturnValue<v8::Value>");
 cpp_class!(pub unsafe struct StdString as "std::string");
 
 
+pub trait FunctionCalback {
+    fn callback(&self, info: &FunctionCallbackInfo);
+    fn fn_name(&self)->&'static str;
+}
 
 pub trait Base{
 

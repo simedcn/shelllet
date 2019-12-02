@@ -1,14 +1,9 @@
 //cpp_class!(pub(crate) unsafe struct FunctionTemplate as "v8::FunctionTemplate");
 use crate::v8::*;
 
-pub trait FunctionCalback {
-    fn callback(&self, info: &FunctionCallbackInfo);
-}
+
 
 cpp! {{
-   class FunctionCalback {
-       virtual void callback(const v8::FunctionCallbackInfo<v8::Value>& args) = 0;
-   };
 
    //#include <iostream>
    struct FunctionCalbackHolder {void*a, *b;  };
@@ -43,7 +38,8 @@ impl LocalFunctionTemplate {
                 FunctionCalbackImpl* impl = new FunctionCalbackImpl();
                 impl->m_trait = inst_ptr;
                 auto ooo = v8::FunctionTemplate::New(isolate, native_function_callback, v8::External::New(isolate, impl));
-                 return handle_scope.Escape( ooo);
+                f_callbacks.push_back(std::unique_ptr<FunctionCalback>(impl));
+                return handle_scope.Escape( ooo);
             });
         }
     }

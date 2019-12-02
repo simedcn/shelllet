@@ -66,7 +66,7 @@ cpp! {{
   MyClassWrapperImpl mci;
   mci.m_trait = holder;
 
-  createContext(isolate, &mci);
+  create_context(isolate, &mci);
   gl_context.Reset();
   release(isolate);
  }

@@ -5,11 +5,18 @@
 #include <v8.h>
 #include <libplatform/libplatform.h>
 
+class FunctionCalback
+{
+public:
+    virtual ~FunctionCalback(){};
+    virtual void callback(const v8::FunctionCallbackInfo<v8::Value> &args) = 0;
+};
 
 v8::Global<v8::Context> gl_context;
+std::vector<std::unique_ptr<FunctionCalback>> f_callbacks;
+
 v8::Isolate *create()
 {
-
     std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
 
     v8::V8::InitializePlatform(platform.get());
@@ -52,8 +59,9 @@ v8::ScriptOrigin module_script_origin(const char *resource_name, v8::Isolate *is
     return origin;
 }
 
-class Wrapper {
-    public:
+class Wrapper
+{
+public:
     virtual std::string source() = 0;
     virtual std::string name() const = 0;
 
@@ -62,12 +70,13 @@ class Wrapper {
     virtual void gl(v8::Local<v8::Object> g) = 0;
 };
 
-std::string exception(v8::Isolate *isolate, v8::TryCatch* try_catch){
+std::string get_exception(v8::Isolate *isolate, v8::TryCatch *try_catch)
+{
     v8::String::Utf8Value value(isolate, try_catch->Exception());
     return std::string(*value);
 }
 
-void createContext(v8::Isolate *isolate, Wrapper* wp)
+void create_context(v8::Isolate *isolate, Wrapper *wp)
 {
     v8::Locker locker(isolate);
     v8::TryCatch try_catch(isolate);
@@ -82,42 +91,44 @@ void createContext(v8::Isolate *isolate, Wrapper* wp)
 
     v8::ScriptOrigin origin = module_script_origin(wp->name().c_str(), isolate);
 
-    std::cout <<"file name: " << wp->name() << std::endl;
+    std::cout << "file name: " << wp->name() << std::endl;
     //std::cout << wp->source() << std::endl;
     //wp->source().c_str()
-	v8::Local<v8::Module> module;
-	v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, wp->source().c_str()).ToLocalChecked(), origin);
-	if (!v8::ScriptCompiler::CompileModule(isolate, &source_text).ToLocal(&module)) {
-		//reportException(isolate_, &try_catch);
-		//return std::string();
-        std::string s= exception(isolate, &try_catch);
+    v8::Local<v8::Module> module;
+    v8::ScriptCompiler::Source source_text(v8::String::NewFromUtf8(isolate, wp->source().c_str()).ToLocalChecked(), origin);
+    if (!v8::ScriptCompiler::CompileModule(isolate, &source_text).ToLocal(&module))
+    {
+        //reportException(isolate_, &try_catch);
+        //return std::string();
+        std::string s = get_exception(isolate, &try_catch);
         std::cout << s;
         return;
-	}
+    }
 
-	if (module->InstantiateModule(context, [](v8::Local<v8::Context> context,
-		v8::Local<v8::String> specifier,
-		v8::Local<v8::Module> referrer)->v8::MaybeLocal<v8::Module> {
-			v8::String::Utf8Value param(context->GetIsolate(), specifier);
+    if (module->InstantiateModule(context, [](v8::Local<v8::Context> context, v8::Local<v8::String> specifier, v8::Local<v8::Module> referrer) -> v8::MaybeLocal<v8::Module> {
+                  v8::String::Utf8Value param(context->GetIsolate(), specifier);
 
-			std::string filename = std::string(*param);
+                  std::string filename = std::string(*param);
 
-			v8::Isolate* isolate = context->GetIsolate();
+                  v8::Isolate *isolate = context->GetIsolate();
 
-			//const auto& itor = MODEL_WRAPPER->getModel()->files[filename];
+                  //const auto& itor = MODEL_WRAPPER->getModel()->files[filename];
 
-			v8::ScriptOrigin origin = module_script_origin(filename.c_str(), context->GetIsolate());
-			v8::ScriptCompiler::Source source(v8::String::NewFromUtf8(isolate, filename.c_str()).ToLocalChecked(), origin);
-			return v8::ScriptCompiler::CompileModule(context->GetIsolate(), &source).ToLocalChecked();
-		}).IsNothing()) {
-	//	reportException(isolate_, &try_catch);
-	//	return std::string();
-	}
+                  v8::ScriptOrigin origin = module_script_origin(filename.c_str(), context->GetIsolate());
+                  v8::ScriptCompiler::Source source(v8::String::NewFromUtf8(isolate, filename.c_str()).ToLocalChecked(), origin);
+                  return v8::ScriptCompiler::CompileModule(context->GetIsolate(), &source).ToLocalChecked();
+              })
+            .IsNothing())
+    {
+        //	reportException(isolate_, &try_catch);
+        //	return std::string();
+    }
     v8::Local<v8::Value> value;
     module->Evaluate(context).ToLocal(&value);
 
-    if (try_catch.HasCaught()) {
-	  std::string s= exception(isolate, &try_catch);
+    if (try_catch.HasCaught())
+    {
+        std::string s = get_exception(isolate, &try_catch);
         std::cout << s;
-	}
+    }
 }

@@ -31,7 +31,7 @@ impl StdString {
 
                 v8::String::Utf8Value utf8(isolate, value);
 
-                return std::string(*utf8? *utf8 : "<unkown>");
+                return std::string(*utf8? *utf8 : "<unknown>");
             });
         }
     }
