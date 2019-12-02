@@ -9,8 +9,15 @@ pub struct Console {
 
 
 impl FunctionCalback for Console {
-    fn callback(&self, info: FunctionCallbackInfo) {
+    fn callback(&self, info: &FunctionCallbackInfo) {
         println!("called");
+        let mut message = String::new();
+
+        for x in 0..info.length(){
+            message = message + &StdString::new2(info.at(x)).to_string();
+        }
+
+        print!("{}", message);
     }
 }
 

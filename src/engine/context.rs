@@ -1,6 +1,5 @@
 use crate::v8::core::WrapperTrait;
 use crate::v8::function_template::FunctionCalback;
-use crate::v8::string::StdString;
 use crate::v8::*;
 
 use crate::engine::console::Console;
@@ -18,7 +17,7 @@ pub fn load(source: String) {
 pub struct ConsoleImpl {}
 
 impl FunctionCalback for ConsoleImpl {
-    fn callback(&self, info: FunctionCallbackInfo) {
+    fn callback(&self, info: &FunctionCallbackInfo) {
         println!("called");
     }
 }

@@ -10,6 +10,7 @@ mod name;
 mod value;
 
 mod bool;
+mod return_value;
 
 cpp_class!(pub unsafe struct MaybeBool as "v8::Maybe<bool>");
 
@@ -26,6 +27,11 @@ cpp_class!(pub unsafe struct GlobalContext as "v8::Global<v8::Context>");
 cpp_class!(pub unsafe struct LocalValue as "v8::Local<v8::Value>");
 cpp_class!(pub unsafe struct LocalData as "v8::Local<v8::Data>");
 cpp_class!(pub unsafe struct FunctionCallbackInfo as "v8::FunctionCallbackInfo<v8::Value>");
+cpp_class!(pub unsafe struct ReturnValue as "v8::ReturnValue<v8::Value>");
+//cpp_class!(pub unsafe struct String as "v8::String::Utf8Value");
+cpp_class!(pub unsafe struct StdString as "std::string");
+
+
 
 pub trait Base{
 
