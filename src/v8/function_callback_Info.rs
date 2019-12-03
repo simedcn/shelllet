@@ -12,8 +12,8 @@ impl FunctionCallbackInfo {
     }
 
     pub fn at(self, index: i32) -> LocalValue {
-        if index > self.length() {
-            return LocalValue::new();
+        if index >= self.length() {
+            return LocalValue::null();
         }
         
         unsafe {
@@ -59,6 +59,17 @@ impl FunctionCallbackInfo {
                 v8::Locker locker(isolate);
 
                 return self.GetReturnValue();
+            })
+        }
+    }
+
+   pub fn throw(self, msg : &str) {
+        let msg_ptr = std::ffi::CString::new(msg).unwrap().as_ptr();
+        unsafe {
+            cpp!([self as "v8::FunctionCallbackInfo<v8::Value>", msg_ptr as "const char *"] {
+                auto isolate = v8::Isolate::GetCurrent();
+                v8::Locker locker(isolate);
+                isolate->ThrowException(v8::String::NewFromUtf8(isolate, msg_ptr).ToLocalChecked());
             })
         }
     }

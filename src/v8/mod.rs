@@ -4,13 +4,14 @@ pub mod object_template;
 pub mod object;
 pub mod context;
 pub mod data;
-pub mod function_callback_Info;
+pub mod function_callback_info;
 pub mod string;
 mod name;
 mod value;
 
 mod bool;
 mod return_value;
+mod array;
 
 cpp_class!(pub unsafe struct MaybeBool as "v8::Maybe<bool>");
 
@@ -28,6 +29,9 @@ cpp_class!(pub unsafe struct LocalValue as "v8::Local<v8::Value>");
 cpp_class!(pub unsafe struct LocalData as "v8::Local<v8::Data>");
 cpp_class!(pub unsafe struct FunctionCallbackInfo as "v8::FunctionCallbackInfo<v8::Value>");
 cpp_class!(pub unsafe struct ReturnValue as "v8::ReturnValue<v8::Value>");
+cpp_class!(pub unsafe struct Uint8Array as "v8::Local<v8::Uint8Array>");
+cpp_class!(pub unsafe struct Array as "v8::Local<v8::Array>");
+
 //cpp_class!(pub unsafe struct String as "v8::String::Utf8Value");
 cpp_class!(pub unsafe struct StdString as "std::string");
 

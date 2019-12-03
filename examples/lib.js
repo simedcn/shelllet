@@ -8,5 +8,5 @@ console.log(5);
 
 console.log("ssss", "ttttt");
 
-start();
-remove();
+start("notepad.exe", ["test.txt"]);
+//removeFile("C:\\Users\\Admin\\source\\repos\\shelllet\\examples\\dddd.txt");

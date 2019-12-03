@@ -13,6 +13,7 @@ public:
 
 v8::Global<v8::Context> gl_context;
 std::vector<std::unique_ptr<FunctionCalback>> f_callbacks;
+static const char * unknown = "<unknown>";
 
 v8::Isolate *create()
 {
@@ -73,6 +74,11 @@ std::string get_exception(v8::Isolate *isolate, v8::TryCatch *try_catch)
 {
     v8::String::Utf8Value value(isolate, try_catch->Exception());
     return std::string(*value);
+}
+
+void throw_exception(v8::Isolate* isolate, const char *message)
+{
+    isolate->ThrowException(v8::String::NewFromUtf8(isolate, message).ToLocalChecked());
 }
 
 void create_context(v8::Isolate *isolate, Wrapper *wp)
