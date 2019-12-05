@@ -1,5 +1,5 @@
 [package]
-name = "rust"
+name = "let"
 version = "0.1.0"
 authors = ["shelllet <shelllet@gmai.com>"]
 edition = "2018"
@@ -17,6 +17,7 @@ lazy_static = "1.4"
 log = "0.4"
 env_logger = "0.7"
 which = "3.1.0"
+minidom = "*"
 
 [build-dependencies]
 cpp_build = "0.5.4"

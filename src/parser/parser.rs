@@ -1,21 +1,14 @@
 use std::collections::HashMap;
 use xml::attribute::OwnedAttribute;
 
+use minidom::Element;
+use std::fmt::Write;
 use std::fs::File;
 use std::io::BufReader;
-
 use xml::reader::{EventReader, XmlEvent};
 
 use crate::parser::sequence;
 use crate::parser::start_process;
-
-// impl std::iter::FromIterator<char> for xml::attribute::OwnedAttribute {
-//     fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> String {
-//         let mut buf = String::new();
-//         buf.extend(iter);
-//         buf
-//     }
-// }
 
 lazy_static! {
     pub static ref ACTIVITY_REVIEWS: HashMap<&'static str, fn(&mut String, &mut EventReader<BufReader<File>>)> = {
@@ -41,6 +34,7 @@ pub fn handle(
 ) {
     let mut parser = parser;
     let mut output = output;
+
     loop {
         match parser.next() {
             Ok(XmlEvent::StartElement {
@@ -51,6 +45,11 @@ pub fn handle(
                 if ACTIVITY_REVIEWS.contains_key(&name.local_name.as_str()) {
                     ACTIVITY_REVIEWS[&name.local_name.as_str()](&mut output, &mut parser);
                 } else if name.local_name == "VALUE" {
+                    if attributes.first().expect("name").value == "displayName" {
+                        writeln!(output, "// {}", attributes.last().expect("value").value);
+                        continue;
+                    }
+
                     start(&mut output, &attributes);
                 }
             }
@@ -70,41 +69,35 @@ pub fn handle(
     }
 }
 
+fn walk(root: &Element, code: &mut String) {
+    let mut code = code;
+    for child in root.children() {
+        if ACTIVITY_REVIEWS.contains_key(&child.name()) {
+            writeln!(&mut code, "function {}(){{", child.name()).expect("code");
+
+            writeln!(&mut code, "}}").expect("code");
+        }
+        walk(&child, &mut code);
+    }
+}
+
 pub fn parse(file_name: String) -> String {
-    use std::fmt::Write;
     let mut output = String::new();
-    let mut stream = String::new();
+    // let mut code = String::new();
 
     let file = File::open(file_name).unwrap();
     let file = BufReader::new(file);
 
     let mut parser = EventReader::new(file);
+   
 
+    ACTIVITY_REVIEWS[sequence::name()](&mut output, &mut parser);
+    // let root: Element = std::fs::read_to_string(&file_name)
+    //     .expect("config file")
+    //     .parse()
+    //     .unwrap();
 
-    //handle(&mut output, &mut parser, name(), |_, _| {}, |_| {});
-
-
-    ACTIVITY_REVIEWS[sequence::name()](&mut stream, &mut parser);
-
-    // loop {
-    //     match parser.next() {
-    //         Ok(XmlEvent::StartElement {
-    //             ref name,
-    //             ref mut attributes,
-    //             ..
-    //         }) => {
-    //             if ACTIVITY_REVIEWS.contains_key(&name.local_name.as_str()) {
-    //                 ACTIVITY_REVIEWS[&name.local_name.as_str()](&mut stream, &mut parser);
-    //             }
-    //         }
-    //         Ok(XmlEvent::EndDocument) => break,
-    //         Err(e) => {
-    //             panic!("Error: {}", e);
-    //         }
-    //         _ => {}
-    //     }
-    // }
-    writeln!(&mut output, "{}", stream).expect("stream");
+    // writeln!(&mut output, "{}", code).expect("code");
 
     output
 }
