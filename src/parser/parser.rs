@@ -89,9 +89,15 @@ pub fn parse(file_name: String) -> String {
     let file = BufReader::new(file);
 
     let mut parser = EventReader::new(file);
-   
 
-    ACTIVITY_REVIEWS[sequence::name()](&mut output, &mut parser);
+    handle(
+        &mut output,
+        &mut parser,
+        sequence::name(),
+        |_, _| {},
+        |_| {},
+    );
+    // ACTIVITY_REVIEWS[sequence::name()](&mut output, &mut parser);
     // let root: Element = std::fs::read_to_string(&file_name)
     //     .expect("config file")
     //     .parse()

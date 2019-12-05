@@ -10,14 +10,13 @@ pub fn name() -> &'static str {
 }
 
 pub fn f_sequence(output: &mut String, parser: &mut EventReader<BufReader<File>>) {
-   let mut index = false;
    let mut parser = parser;
    let mut output = output;
 
-   writeln!(output, "{{");
+   writeln!(output, "{{").unwrap();
+
 
    handle(&mut output, &mut parser, name(), |_, _| {}, |_| {});
-  
-   writeln!(output, "}}");
 
+   writeln!(output, "}}").unwrap();
 }

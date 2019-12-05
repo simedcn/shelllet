@@ -14,7 +14,7 @@ pub fn f_start_process(output: &mut String, parser: &mut EventReader<BufReader<F
    let mut index = false;
    let mut parser = parser;
    let mut output = output;
-   writeln!(output, "{{");
+  writeln!(output, "{{").unwrap();
 
    handle(
       &mut output,
@@ -50,5 +50,5 @@ pub fn f_start_process(output: &mut String, parser: &mut EventReader<BufReader<F
          .expect("error");
       },
    );
-   writeln!(output, "}}");
+   writeln!(output, "}}").unwrap();
 }
